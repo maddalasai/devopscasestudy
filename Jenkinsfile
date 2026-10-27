@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         // CHANGE THESE TWO VALUES
-        DOCKERHUB_USER = 'YOUR_DOCKERHUB_USERNAME'
-        GITHUB_REPO    = 'https://github.com/YOUR_GITHUB_USERNAME/booknest-reading-tracker.git'
+        DOCKERHUB_USER = '141034durga'
+GITHUB_REPO    = 'https://github.com/maddalasai/devopscasestudy.git'
 
         IMAGE_NAME = "${DOCKERHUB_USER}/booknest-reading-tracker"
     }
