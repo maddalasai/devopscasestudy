@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: booknest
-          image: YOUR_DOCKERHUB_USERNAME/booknest-reading-tracker:latest
+          image: 141034durga/booknest-reading-tracker:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
