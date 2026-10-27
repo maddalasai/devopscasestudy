@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Reading Journal{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <p class="label">Reading journal</p>
+    <h1 class="title big">Notes from <em>the margins.</em></h1>
+  </header>
+
+  <ol class="entries">
+    {% for e in entries %}
+    <li class="entry">
+      <time class="entry-date">{{ e.date }}</time>
+      <div>
+        <h2 class="entry-title">{{ e.title }}</h2>
+        <p>{{ e.note }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+
+  <a class="btn btn-ghost" href="{{ url_for('add_book') }}">Add a book <span aria-hidden="true">+</span></a>
+</div>
+{% endblock %}

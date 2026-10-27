@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover, book_card %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero wrap">
+  <div class="hero-text">
+    <p class="label">Your personal reading club</p>
+    <h1 class="display">Stories<br><span class="indent">worth</span><br><em>keeping.</em></h1>
+    <p class="lede">Collect the books that found you, follow the ones still unfolding, and wander into worlds you have not met yet.</p>
+    <div class="actions">
+      <a class="btn" href="{{ url_for('library') }}">Explore my library</a>
+      <a class="btn btn-ghost" href="{{ url_for('add_book') }}">Add a new book</a>
+    </div>
+    <p class="caption">This season, <em>{{ stats.completed }} stories finished and {{ '{:,}'.format(stats.pages_read) }} pages turned.</em></p>
+  </div>
+
+  <div class="collage" aria-hidden="false">
+    <div class="blush-block"></div>
+    <div class="collage-book c1">{{ cover(hero[0]) }}</div>
+    <div class="collage-book c2">{{ cover(hero[1]) }}</div>
+    <div class="collage-book c3">{{ cover(hero[2]) }}</div>
+    <div class="stamp"><span>Now reading</span><strong>{{ current.title }}</strong></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" aria-label="Reading statistics">
+  <div class="wrap stats-grid">
+    <div><span class="num">{{ stats.total }}</span><span class="lbl">Books collected</span></div>
+    <div><span class="num">{{ stats.reading }}</span><span class="lbl">Currently reading</span></div>
+    <div><span class="num">{{ stats.completed }}</span><span class="lbl">Stories completed</span></div>
+    <div><span class="num">{{ stats.progress }}<small>%</small></span><span class="lbl">Reading progress</span></div>
+  </div>
+</section>
+
+<!-- NOW READING FEATURE -->
+<section class="wrap feature">
+  <div class="feature-cover">
+    <div class="rose-block"></div>
+    {{ cover(current) }}
+  </div>
+  <div class="feature-text">
+    <p class="label">Now reading</p>
+    <h2 class="title huge">{{ current.title }}</h2>
+    <p class="feature-by">by <em>{{ current.author }}</em></p>
+    <div class="thread big"><span style="width: {{ current.percent }}%"></span></div>
+    <p class="pages">{{ current.pages_read }} of {{ current.total_pages }} pages · {{ current.percent }}% read</p>
+    <a class="text-link" href="{{ url_for('goals') }}"><span>See my reading goals</span></a>
+  </div>
+</section>
+
+<!-- THE EDIT (masonry) -->
+<section class="wrap section">
+  <div class="section-head">
+    <h2 class="title">The <em>edit.</em></h2>
+    <a class="text-link" href="{{ url_for('library') }}"><span>View the whole library</span></a>
+  </div>
+  <div class="masonry">
+    {% for book in featured %}{{ book_card(book) }}{% endfor %}
+  </div>
+</section>
+
+<!-- MOODS -->
+<section class="wrap section" id="discover">
+  <div class="section-head">
+    <h2 class="title">What are we in the <em>mood for?</em></h2>
+  </div>
+  <div class="moods">
+    {% for m in moods %}
+    <a class="mood mood-{{ m.key }}" href="{{ url_for('library', mood=m.key) }}">
+      <span class="mood-count">{{ m.count }} {{ 'book' if m.count == 1 else 'books' }}</span>
+      <span class="mood-title">{{ m.title }}</span>
+      <span class="mood-line">{{ m.line }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<section class="wrap pull">
+  <p>“A room without books is like a body without a soul.”</p>
+  <span>Cicero</span>
+</section>
+{% endblock %}

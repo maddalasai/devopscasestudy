@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+.git/
+.gitignore
+k8s/
+Jenkinsfile
+README.md
+GUIDE.md

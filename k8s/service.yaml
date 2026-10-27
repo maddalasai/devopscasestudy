@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: booknest-service
+spec:
+  type: NodePort
+  selector:
+    app: booknest
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30080

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cover %}
+{% block title %}Reading Goals{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <p class="label">Reading goals</p>
+    <h1 class="title big">This year, <em>one page<br>at a time.</em></h1>
+  </header>
+
+  <section class="goal-panel">
+    <div class="ring" role="img" aria-label="{{ percent }} percent of the yearly goal">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fg" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="{{ percent }} 100"/>
+      </svg>
+      <div class="ring-text"><span class="num huge">{{ done }}</span><span class="of">of {{ goal }} books</span></div>
+    </div>
+    <div class="goal-body">
+      <p class="goal-target">Our target: finish <em>{{ goal }} books</em> by December.</p>
+      <p class="goal-note">{{ percent }}% there · {{ remaining }} {{ 'book' if remaining == 1 else 'books' }} still to go · {{ '{:,}'.format(stats.pages_read) }} pages turned</p>
+
+      <form class="goal-form" method="post" action="{{ url_for('goals') }}">
+        <div class="field {{ 'has-error' if error }}">
+          <label for="goal">Change my yearly goal</label>
+          <div class="inline">
+            <input id="goal" type="number" name="goal" min="1" max="365" value="{{ goal }}" required>
+            <button class="btn btn-small" type="submit">Save goal</button>
+          </div>
+          {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        </div>
+        {% if saved %}<p class="notice" role="status">Your goal has been updated.</p>{% endif %}
+      </form>
+    </div>
+  </section>
+
+  <section class="goal-columns">
+    <div>
+      <h2 class="title small">Currently <em>reading.</em></h2>
+      {% for book in current %}
+      <div class="goal-book">
+        <div class="mini-cover">{{ cover(book) }}</div>
+        <div class="goal-book-info">
+          <div class="goal-book-head">
+            <span class="goal-book-title">{{ book.title }}</span>
+            <span class="goal-book-pct">{{ book.percent }}%</span>
+          </div>
+          <div class="thread"><span style="width: {{ book.percent }}%"></span></div>
+          <p class="pages">{{ book.pages_read }} of {{ book.total_pages }} pages · {{ book.author }}</p>
+        </div>
+      </div>
+      {% else %}
+      <p class="note">Nothing in progress. Start a new story from your library.</p>
+      {% endfor %}
+    </div>
+
+    <div class="genre-box">
+      <h2 class="title small">Your <em>taste.</em></h2>
+      {% for g in by_genre %}
+      <div class="genre-row">
+        <span>{{ g.name }}</span>
+        <div class="thread"><span style="width: {{ g.pct }}%"></span></div>
+        <b>{{ g.count }}</b>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2 class="title">Finished <em>this year.</em></h2></div>
+    <div class="finished">
+      {% for book in finished %}<div class="finished-book">{{ cover(book) }}</div>
+      {% else %}<p class="note">Your first finished book will appear here.</p>{% endfor %}
+    </div>
+  </section>
+
+  <blockquote class="quote">
+    <p>A reader lives a thousand lives before he dies.</p>
+    <cite>George R. R. Martin</cite>
+  </blockquote>
+</div>
+{% endblock %}

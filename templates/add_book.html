@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Add a Book{% endblock %}
+
+{% block content %}
+<div class="wrap add-layout">
+  <aside class="add-panel">
+    <p class="label light">A new entry</p>
+    <h1 class="title big light">Write it <em>down.</em></h1>
+    <p class="lede light">Every book deserves a place on your shelf. Add the details and it joins your collection straight away.</p>
+    <div class="preview" aria-hidden="true">
+      <div class="cover tone-2" id="preview-cover">
+        <span class="cover-title" id="preview-title">Your next story</span>
+        <span class="cover-author" id="preview-author">Author</span>
+      </div>
+    </div>
+    <p class="note light">Your shelf lives in memory, so it resets when the app restarts.</p>
+  </aside>
+
+  <form class="journal-form" method="post" novalidate>
+    {% if errors %}<p class="notice notice-error" role="alert">A few details need another look.</p>{% endif %}
+
+    <div class="field {{ 'has-error' if errors.title }}">
+      <label for="title">Book title</label>
+      <input id="title" type="text" name="title" value="{{ form.title }}" placeholder="e.g. Ikigai" required>
+      {% if errors.title %}<p class="error">{{ errors.title }}</p>{% endif %}
+    </div>
+
+    <div class="field {{ 'has-error' if errors.author }}">
+      <label for="author">Author</label>
+      <input id="author" type="text" name="author" value="{{ form.author }}" placeholder="e.g. Héctor García" required>
+      {% if errors.author %}<p class="error">{{ errors.author }}</p>{% endif %}
+    </div>
+
+    <div class="row">
+      <div class="field {{ 'has-error' if errors.genre }}">
+        <label for="genre">Genre</label>
+        <select id="genre" name="genre">
+          {% for g in genres %}<option value="{{ g }}" {{ 'selected' if g == form.genre }}>{{ g }}</option>{% endfor %}
+        </select>
+        {% if errors.genre %}<p class="error">{{ errors.genre }}</p>{% endif %}
+      </div>
+      <div class="field {{ 'has-error' if errors.status }}">
+        <label for="status">Reading status</label>
+        <select id="status" name="status">
+          {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if s == form.status }}>{{ s }}</option>{% endfor %}
+        </select>
+        {% if errors.status %}<p class="error">{{ errors.status }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field {{ 'has-error' if errors.total_pages }}">
+        <label for="total_pages">Total pages</label>
+        <input id="total_pages" type="number" name="total_pages" min="1" value="{{ form.total_pages }}" placeholder="320" required>
+        {% if errors.total_pages %}<p class="error">{{ errors.total_pages }}</p>{% endif %}
+      </div>
+      <div class="field {{ 'has-error' if errors.pages_read }}">
+        <label for="pages_read">Pages read</label>
+        <input id="pages_read" type="number" name="pages_read" min="0" value="{{ form.pages_read }}" placeholder="0">
+        {% if errors.pages_read %}<p class="error">{{ errors.pages_read }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="field {{ 'has-error' if errors.isbn }}">
+      <label for="isbn">ISBN <span class="opt">(optional, for a beautiful cover)</span></label>
+      <input id="isbn" type="text" name="isbn" value="{{ form.isbn }}" placeholder="9780141439518">
+      {% if errors.isbn %}<p class="error">{{ errors.isbn }}</p>{% endif %}
+    </div>
+
+    <button class="btn" type="submit">Add to my shelf <span aria-hidden="true">+</span></button>
+  </form>
+</div>
+{% endblock %}

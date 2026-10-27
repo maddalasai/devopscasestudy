@@ -1,0 +1,31 @@
+{# Reusable pieces: a book cover (with fallback) and a book card #}
+
+{% macro cover(book) %}
+<div class="cover tone-{{ book.tone }}">
+  <span class="cover-title">{{ book.title }}</span>
+  <span class="cover-author">{{ book.author }}</span>
+  {% if book.isbn %}
+  {# If the image fails to load it removes itself and the designed fallback cover stays #}
+  <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg?default=false"
+       alt="Cover of {{ book.title }}" loading="lazy" onerror="this.remove()">
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro book_card(book) %}
+<article class="book-card">
+  <div class="cover-wrap">
+    {{ cover(book) }}
+    <div class="cover-veil">
+      <span>{{ book.pages_read }} / {{ book.total_pages }} pages</span>
+      <div class="thread"><span style="width: {{ book.percent }}%"></span></div>
+    </div>
+  </div>
+  <div class="book-meta">
+    <p class="genre">{{ book.genre }}</p>
+    <h3>{{ book.title }}</h3>
+    <p class="by">{{ book.author }}</p>
+    <p class="status status-{{ book.status | lower | replace(' ', '-') }}">{{ book.status }}{% if book.status == 'Reading' %} · {{ book.percent }}%{% endif %}</p>
+  </div>
+</article>
+{% endmacro %}
